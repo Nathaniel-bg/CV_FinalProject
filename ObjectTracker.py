@@ -58,7 +58,7 @@ def draw_grid(img, grid_shape, center, color=(0, 255, 0), thickness=1):
     arr_sizey = len(y_pos)
     tmp_val = 0
     for vals in y_pos:
-    
+        
         if center[1] >= 0 and center[1] <= y_pos[0]:
             min_y = 0
             max_y = vals
@@ -88,6 +88,7 @@ def main():
     #cap = cv2.VideoCapture(0)
     cap = EasyPySpin.VideoCapture(0)
 
+    #Make sure the capture is open
     if not cap.isOpened():
         print('Could not open video device')
         return -1
@@ -117,25 +118,19 @@ def main():
                 ((x, y), radius) = cv2.minEnclosingCircle(c)
                 M = cv2.moments(c)
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"])) 
-                #print(center) 
-        color = (0, 0, 255)
         if radius > 0.5:
                     # draw the circle and centroid on the frame,q
                     # then update the list of tracked points
                     #cv2.circle(mask_frame, (int(x), int(y)), int(radius), color, 2)
-                    cv2.circle(frame_bgr, (int(x), int(y)), int(radius), color, 2)
+                    cv2.circle(frame_bgr, (int(x), int(y)), int(radius), (0, 0, 255), 2)
 
         #Get the image dimensions
         grid_dim = (10,10)
         image_pos= draw_grid(img=frame_bgr, grid_shape=grid_dim, center=center)
 
-       
-        #get_pos(center, x_grid, y_grid)
-
-        #cv2.resize(image_grid, None, fx=0.25, fy=0.25)
+        #Display the frame
         cv2.imshow('image', image_pos)
-        #cv2.imshow('mask', mask_frame)
-        #cv2.imshow('contour', cnts)
+
 
         #Check for inputs during video
         if cv2.waitKey(10) & 0xFF == ord('q'):
